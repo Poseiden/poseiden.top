@@ -100,4 +100,4 @@ theme: landscape
 deploy:
   type: git
   repo: git@github.com:tony-haibo-zhu/tony-haibo-zhu.github.io.git
-  branch: gh-pages
+  branch: master
