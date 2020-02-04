@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 朱海波的个人博客
-subtitle: ''
-description: ''
+title: Poseiden's Blog
+subtitle: '静若处子，动则猛虎'
+description: '静若处子，动则猛虎'
 keywords:
-author: hbzhu
+author: Poseiden
 language: en
 timezone: ''
 
@@ -58,7 +58,7 @@ highlight:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 6
   order_by: -date
 
 # Category & Tag
