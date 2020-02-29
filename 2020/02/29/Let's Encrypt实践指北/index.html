@@ -15,7 +15,7 @@
 <meta property="og:description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-29T03:36:44.000Z">
-<meta property="article:modified_time" content="2020-02-29T14:50:12.168Z">
+<meta property="article:modified_time" content="2020-02-29T15:13:16.124Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
   
@@ -140,7 +140,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please deploy a DNS TXT record under the name</span><br><span class="line">_acme-challenge.your_domain.com with the following value:</span><br><span class="line"></span><br><span class="line">`一串base64编码`</span><br><span class="line"></span><br><span class="line">Before continuing, verify the record is deployed.</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Press Enter to Continue</span><br></pre></td></tr></table></figure>
 <p>这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以azure为例，如下图。</p>
 </br>
-![azure dns](./../images/azure_dns.jpg)
+![azure dns](/Let's Encrypt实践指北/azure_dns.jpg)
 </br>
 配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig  -t txt  _acme-challenge.archguard.org @8.8.8.8    </span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;_acme-challenge.archguard.org.        IN      TXT</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">_acme-challenge.archguard.org. 599 IN  TXT     <span class="string">"刚才那串base64编码"</span></span><br></pre></td></tr></table></figure>
@@ -161,7 +161,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck77qo2hn0002hwtqbmp3buz5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck77qwrnp0000rwtq2uy70j91" class="article-share-link">Share</a>
       
       
     </footer>
@@ -171,9 +171,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/02/03/%E6%B5%85%E8%B0%88%E6%BC%94%E8%BF%9B%E5%BC%8F%E6%9E%B6%E6%9E%84(%E4%B8%80)/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Let&#39;s Encrypt实践指北</div>
+      <div class="article-nav-title">浅谈演进式架构(一)</div>
     </a>
   
 </nav>
@@ -214,10 +214,6 @@
           </li>
         
           <li>
-            <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">Let&#39;s Encrypt实践指北</a>
-          </li>
-        
-          <li>
             <a href="/2020/02/03/%E6%B5%85%E8%B0%88%E6%BC%94%E8%BF%9B%E5%BC%8F%E6%9E%B6%E6%9E%84(%E4%B8%80)/">浅谈演进式架构(一)</a>
           </li>
         
@@ -227,6 +223,10 @@
         
           <li>
             <a href="/2016/03/23/%E5%AF%B9python%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/">对Python高阶函数的一些理解</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/">浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关</a>
           </li>
         
       </ul>
