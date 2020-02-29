@@ -1,5 +1,5 @@
 ---
-title: Letsencrypt实践指北
+title: Let's Encrypt实践指北
 date: 2020-02-29 11:36:44
 tags:
 ---
@@ -122,7 +122,7 @@ tags:
     ```
     这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以azure为例，如下图。
     </br>
-    ![azure dns](./../images/azure_dns.jpg)
+    ![azure dns](/Let's Encrypt实践指北/azure_dns.jpg)
     </br>
     配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
     ```bash
