@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Letsencrypt实践指北 | Poseiden&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Letsencrypt实践指北">
+<meta property="og:url" content="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/index.html">
+<meta property="og:site_name" content="Poseiden&#39;s Blog">
+<meta property="og:description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-29T03:36:44.000Z">
+<meta property="article:modified_time" content="2020-02-29T14:50:12.168Z">
+<meta property="article:author" content="Poseiden">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Poseiden&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Poseiden&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">静若处子，动则猛虎</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Let&#39;s Encrypt实践指北" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" class="article-date">
+  <time datetime="2020-02-29T03:36:44.000Z" itemprop="datePublished">2020-02-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Letsencrypt实践指北
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— <strong><em>Let’s Encrypt</em></strong> 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使用，总结下来，以供参考。另外还有一点是，在我查找一些相关文档的过程中发现一个问题，就是由于这方面知识的时效性很差，出现很多信息不对等的情况，所以我将参考过的所有官网文档链接贴在了最后，方便大家在看到这篇文章时，根据链接查看最新官方支持情况。<br>(<strong>Let’s Encrypt</strong> 以下简称 <strong>“LE”</strong>)</p>
+<a id="more"></a>
+
+<h2 id="Let’s-Encrypt"><a href="#Let’s-Encrypt" class="headerlink" title="Let’s Encrypt"></a>Let’s Encrypt</h2><h3 id="不支持IP绑定"><a href="#不支持IP绑定" class="headerlink" title="不支持IP绑定"></a>不支持IP绑定</h3><p>首先说明的是，本来基于成本考虑，是没有打算另购买一个域名来实践HTTPS的，因为市面上的一些主流证书都可以既支持域名，又可以支持公有IP。但是由LE官方论坛得知，目前只支持域名，并也没有计划支持公有IP。所以我就打消了这个念头，转而在阿里云上单独购买了一个域名。</p>
+<h3 id="证书类型"><a href="#证书类型" class="headerlink" title="证书类型"></a>证书类型</h3><p>以下介绍几个关于证书类型的基本概念。<br>已知的LE现在支持三种证书类型。分别是 <strong>单域名证书</strong>，<strong>SAN证书</strong>和<strong>Wildcard证书</strong>。单域名证书，顾名思义，此证书只包含一个域名，属于基本类型。SAN证书，一张证书可以包含多个域名，早期用于多个子域名申请同一张证书的情况。经实践得知，此种证书在使用客户端申请时最大的弊端需要一次性写出所有的域名，对于后期扩展不太方便。最后一种是通配符证书，是本文详细介绍的对象。此种证书类型是LE后期支持的，使用起来极大方便了小型开发团队和个人开发者。比如针对<code>.example.com</code>这个域名，申请通配符证书（表达式为<code>*.example.com</code>）后，凡是基于其的子域名，都可以使用这个证书。但为了支持此特性，用于申请证书的客户端也必须要支持ACME的V2版本。（官方推荐的Cerbot客户端在0.22版本后）</p>
+<p>需要注意的是，无论哪种证书，根据LE的最新的中文官方文档（2019年2月24日最后更新）所示，单张证书下最多可包含100个子域名，而每个注册域名（顶级域名）的证书数量是50张/每周，综上所述，每周可为5000个不同的子域名申请证书，且在2019年三月后，续期证书也算入域名证书数量内，对于个人或第三方独立开发者的正常使用而言，这个支持量级是足够的。</p>
+<h2 id="ACME-客户端-——-Cerbot"><a href="#ACME-客户端-——-Cerbot" class="headerlink" title="ACME 客户端 —— Cerbot"></a>ACME 客户端 —— Cerbot</h2><p>搞清了关于证书方面的知识，那么我们接下来看看如何实践。在客户端方面，LE支持很多种不同的证书申请客户端，官方推荐的为Certbot，但值得注意的是，无论选择哪种客户端，都必须支持 <strong>ACME的v2</strong> 版本，因为从2019年的11月开始，LE将 <strong>停止通过ACMEv1进行账号注册</strong>，计划于2020年的6月开始将停止新域名的验证。</p>
+<h3 id="Certbot-的选择"><a href="#Certbot-的选择" class="headerlink" title="Certbot 的选择"></a>Certbot 的选择</h3><p>个人建议在实践时使用更为推荐的certbot-auto客户端，在官方的解释中，certbot-auto相当于certbot的wrapper，使用它能自动选择最新版本的cerbot，对已有cerbot进行升级等操作。并且因为certbot运行时需要用到python环境，所以对应的依赖也能自动装载到python的虚拟环境中。</p>
+<h3 id="Certbot-插件选择"><a href="#Certbot-插件选择" class="headerlink" title="Certbot 插件选择"></a>Certbot 插件选择</h3><p>使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下图<br>|  Plugin | Certificate  | Install  |<br>|—|—|—|<br>| apache | ✅|  ✅ |<br>| nginx  | ✅  | ✅  |<br>| webroot  | ✅  |  ❌ |<br>| standalone | ✅  |  ❌ |<br>| DNS plugins  | ✅  | ❌ |<br>| manual  | ✅  |  ❌  |</p>
+<p>在申请证书的过程中，LE需要对该域名的所有权进行验证，而以上几个插件都支持了 http-01 或 dns-01中的一种，亦或是同时支持两种。不同的验证方式会有不同的操作，这个后面会说。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>好了，上面啰啰嗦嗦说了这么多，下面可以进入到实战环节了。我们以申请通配符证书为例。</p>
+<ol>
+<li><p>首先安装certbot-auto</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line">sudo mv certbot-auto /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chown root /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chmod 0755 /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">/usr/<span class="built_in">local</span>/bin/certbot-auto --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取证书<br> 这里背景是这样的，由于我们需要申请通配符证书，LE官方FAQ指出只能通过 <code>dns-01</code> 的方式来验证。插件选择 <code>manual</code>,表示手动方式来配置。所以就有了以下这条命令。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certbot-auto certonly  </span><br><span class="line">\ -d *.your_domain.com --manual --preferred-challenges dns </span><br><span class="line">\ --server https://acme-v02.api.letsencrypt.org/directory</span><br></pre></td></tr></table></figure>
+
+<p> 这里几个参数着重说一下：</p>
+<ul>
+<li><p><strong>certonly</strong>: 表示使用certbot只用来申请获取证书，而不做安装操作。</p>
+</li>
+<li><p><strong>-d</strong>: 域名。这里注意，通配符证书一定配置为 <code>*.domain.com</code>，而不是 <code>domain.com</code></p>
+</li>
+<li><p><strong>–manual</strong>: 手动模式，理论上也可以选择 <code>DNS plugins</code></p>
+</li>
+<li><p><strong>–preferred-challenges</strong>: 虽然manual模式下是同时支持两种验证方式的，而通配符证书需要采用 <code>dns-01</code> 验证方式</p>
+</li>
+<li><p><strong>–server</strong>: ACME v2 验证使用的具体地址</p>
+</br>
+
+<p>返回的命令行输出如下：</p>
+</br>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Saving debug <span class="built_in">log</span> to /var/<span class="built_in">log</span>/letsencrypt/letsencrypt.log</span><br><span class="line">Plugins selected: Authenticator manual, Installer None</span><br><span class="line">Enter email address (used <span class="keyword">for</span> urgent renewal and security notices) (Enter <span class="string">'c'</span> to</span><br><span class="line">cancel): your_email@gmail.com</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please <span class="built_in">read</span> the Terms of Service at</span><br><span class="line">https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must</span><br><span class="line">agree <span class="keyword">in</span> order to register with the ACME server at</span><br><span class="line">https://acme-v02.api.letsencrypt.org/directory</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">(A)gree/(C)ancel: A</span><br><span class="line"></span><br><span class="line">Plugins selected: Authenticator manual, Installer None</span><br><span class="line">Obtaining a new certificate</span><br><span class="line">Performing the following challenges:</span><br><span class="line">dns-01 challenge <span class="keyword">for</span> your_domain.com</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">NOTE: The IP of this machine will be publicly logged as having requested this</span><br><span class="line">certificate. If you<span class="string">'re running certbot in manual mode on a machine that is not</span></span><br><span class="line"><span class="string">your server, please ensure you'</span>re okay with that.</span><br><span class="line"></span><br><span class="line">Are you OK with your IP being logged?</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">(Y)es/(N)o: y</span><br></pre></td></tr></table></figure>
+从这里开始需要一些交互：</li>
+<li><p>第一个：输入联系人的email，方便以后接受更新证书提醒和安全提示的</p>
+</li>
+<li><p>第二个：同意条款</p>
+</li>
+<li><p>第三个：记录此IP为申请证书的机器</p>
+</br>
+</li>
+</ul>
+</li>
+<li><p>DNS配置<br>上步之后，命令行输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please deploy a DNS TXT record under the name</span><br><span class="line">_acme-challenge.your_domain.com with the following value:</span><br><span class="line"></span><br><span class="line">`一串base64编码`</span><br><span class="line"></span><br><span class="line">Before continuing, verify the record is deployed.</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Press Enter to Continue</span><br></pre></td></tr></table></figure>
+<p>这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以azure为例，如下图。</p>
+</br>
+![azure dns](./../images/azure_dns.jpg)
+</br>
+配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig  -t txt  _acme-challenge.archguard.org @8.8.8.8    </span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;_acme-challenge.archguard.org.        IN      TXT</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">_acme-challenge.archguard.org. 599 IN  TXT     <span class="string">"刚才那串base64编码"</span></span><br></pre></td></tr></table></figure>
+这里一定注意,有`ANSWER SECTION`才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。
+</br></li>
+<li><p>成功<br>网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 <code>/etc/letsencrypt/archive/your_domain.com</code> 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，我就不在这里费口舌了。如果遇到问题，可以继续探讨。</p>
+</li>
+</ol>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
+<li><a href="https://letsencrypt.org/docs/faq/" target="_blank" rel="noopener">Letsencrypt - FAQ (中英文)</a></li>
+<li><a href="https://letsencrypt.org/docs/rate-limits/" target="_blank" rel="noopener">Letsencrypt - Rate Limit (中英文)</a></li>
+<li><a href="https://letsencrypt.org/docs/challenge-types/" target="_blank" rel="noopener">Letsencrypt - Challenge Types (中英文)</a></li>
+<li><a href="https://community.letsencrypt.org/t/end-of-life-plan-for-acmev1/88430" target="_blank" rel="noopener">Letsencrypt - End of Life Plan for ACMEv1</a></li>
+<li><a href="https://certbot.eff.org/docs/install.html#certbot-auto" target="_blank" rel="noopener">Certbot - Certbot-auto</a></li>
+<li><a href="https://certbot.eff.org/docs/using.html#getting-certificates-and-choosing-plugins" target="_blank" rel="noopener">Certbot - Getting certificates and plugins</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck77qo2hn0002hwtqbmp3buz5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Let&#39;s Encrypt实践指北</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/">Letsencrypt实践指北</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8D%97/">Let&#39;s Encrypt实践指北</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/03/%E6%B5%85%E8%B0%88%E6%BC%94%E8%BF%9B%E5%BC%8F%E6%9E%B6%E6%9E%84(%E4%B8%80)/">浅谈演进式架构(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/19/Generator-of-python/">Generator of Python</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/23/%E5%AF%B9python%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/">对Python高阶函数的一些理解</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+    
+      <span id="busuanzi_container_site_pv">
+	    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+      </span><br>
+    
+      &copy; 2020 Poseiden<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
