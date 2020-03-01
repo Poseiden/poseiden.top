@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
 <meta property="article:published_time" content="2020-02-29T11:36:44.000Z">
-<meta property="article:modified_time" content="2020-03-01T10:34:07.851Z">
+<meta property="article:modified_time" content="2020-03-01T10:41:05.552Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
@@ -102,7 +102,46 @@
 <p>需要注意的是，无论哪种证书，根据LE的最新的中文官方文档（2019年2月24日最后更新）所示，单张证书下最多可包含100个子域名，而每个注册域名（顶级域名）的证书数量是50张/每周，综上所述，每周可为5000个不同的子域名申请证书，且在2019年三月后，续期证书也算入域名证书数量内，对于个人或第三方独立开发者的正常使用而言，这个支持量级是足够的。</p>
 <h2 id="ACME-客户端-——-Cerbot"><a href="#ACME-客户端-——-Cerbot" class="headerlink" title="ACME 客户端 —— Cerbot"></a>ACME 客户端 —— Cerbot</h2><p>搞清了关于证书方面的知识，那么我们接下来看看如何实践。在客户端方面，LE支持很多种不同的证书申请客户端，官方推荐的为Certbot，但值得注意的是，无论选择哪种客户端，都必须支持 <strong>ACME的v2</strong> 版本，因为从2019年的11月开始，LE将 <strong>停止通过ACMEv1进行账号注册</strong>，计划于2020年的6月开始将停止新域名的验证。</p>
 <h3 id="Certbot-的选择"><a href="#Certbot-的选择" class="headerlink" title="Certbot 的选择"></a>Certbot 的选择</h3><p>个人建议在实践时使用更为推荐的certbot-auto客户端，在官方的解释中，certbot-auto相当于certbot的wrapper，使用它能自动选择最新版本的cerbot，对已有cerbot进行升级等操作。并且因为certbot运行时需要用到python环境，所以对应的依赖也能自动装载到python的虚拟环境中。</p>
-<h3 id="Certbot-插件选择"><a href="#Certbot-插件选择" class="headerlink" title="Certbot 插件选择"></a>Certbot 插件选择</h3><p>使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下图<br>|  Plugin | Certificate  | Install  |<br>|—|—|—|<br>| apache | ✅|  ✅ |<br>| nginx  | ✅  | ✅  |<br>| webroot  | ✅  |  ❌ |<br>| standalone | ✅  |  ❌ |<br>| DNS plugins  | ✅  | ❌ |<br>| manual  | ✅  |  ❌  |</p>
+<h3 id="Certbot-插件选择"><a href="#Certbot-插件选择" class="headerlink" title="Certbot 插件选择"></a>Certbot 插件选择</h3><p>使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Plugin</th>
+<th align="center">Certificate</th>
+<th align="center">Install</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">apache</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td align="left">nginx</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td align="left">webroot</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="left">standalone</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="left">DNS plugins</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="left">manual</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+</tbody></table>
 <p>在申请证书的过程中，LE需要对该域名的所有权进行验证，而以上几个插件都支持了 http-01 或 dns-01中的一种，亦或是同时支持两种。不同的验证方式会有不同的操作，这个后面会说。</p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>好了，上面啰啰嗦嗦说了这么多，下面可以进入到实战环节了。我们以申请通配符证书为例。</p>
 <ol>
@@ -161,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78wdfj80004zbp1apfhb1n6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78wme330004zqpn4gbo7hls" class="article-share-link">Share</a>
       
       
     </footer>
