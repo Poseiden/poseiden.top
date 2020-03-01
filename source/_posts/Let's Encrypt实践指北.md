@@ -28,15 +28,17 @@ tags:
 个人建议在实践时使用更为推荐的certbot-auto客户端，在官方的解释中，certbot-auto相当于certbot的wrapper，使用它能自动选择最新版本的cerbot，对已有cerbot进行升级等操作。并且因为certbot运行时需要用到python环境，所以对应的依赖也能自动装载到python的虚拟环境中。
 
 ### Certbot 插件选择
-使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下图
-|  Plugin | Certificate  | Install  |
-|---|---|---|
-| apache | ✅|  ✅ |
-| nginx  | ✅  | ✅  |
-| webroot  | ✅  |  ❌ |
-| standalone | ✅  |  ❌ |
-| DNS plugins  | ✅  | ❌ |
-| manual  | ✅  |  ❌  |
+使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下表：
+
+|  Plugin     | Certificate | Install |
+| :------     | :--------:  | :---:   |
+| apache      | ✅          | ✅      |
+| nginx       | ✅          | ✅      |
+| webroot     | ✅          | ❌      |
+| standalone  | ✅          | ❌      |
+| DNS plugins | ✅          | ❌      |
+| manual      | ✅          |  ❌     |
+
 
 在申请证书的过程中，LE需要对该域名的所有权进行验证，而以上几个插件都支持了 http-01 或 dns-01中的一种，亦或是同时支持两种。不同的验证方式会有不同的操作，这个后面会说。
 
