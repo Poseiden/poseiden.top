@@ -141,12 +141,12 @@ tags:
     这里一定注意,有`ANSWER SECTION`才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。
     </br>
 4. 成功
-   网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，我就不在这里赘述了。如果遇到问题，可以继续探讨。
+   网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。
 
 ## Ref
-- [Letsencrypt - FAQ (中英文)](https://letsencrypt.org/docs/faq/)
-- [Letsencrypt - Rate Limit (中英文)](https://letsencrypt.org/docs/rate-limits/)
-- [Letsencrypt - Challenge Types (中英文)](https://letsencrypt.org/docs/challenge-types/)
-- [Letsencrypt - End of Life Plan for ACMEv1](https://community.letsencrypt.org/t/end-of-life-plan-for-acmev1/88430)
+- [Let's Encrypt - FAQ (中英文)](https://letsencrypt.org/docs/faq/)
+- [Let's Encrypt - Rate Limit (中英文)](https://letsencrypt.org/docs/rate-limits/)
+- [Let's Encrypt - Challenge Types (中英文)](https://letsencrypt.org/docs/challenge-types/)
+- [Let's Encrypt - End of Life Plan for ACMEv1](https://community.letsencrypt.org/t/end-of-life-plan-for-acmev1/88430)
 - [Certbot - Certbot-auto](https://certbot.eff.org/docs/install.html#certbot-auto)
 - [Certbot - Getting certificates and plugins](https://certbot.eff.org/docs/using.html#getting-certificates-and-choosing-plugins)
