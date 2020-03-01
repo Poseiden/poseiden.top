@@ -7,19 +7,20 @@
   
   <title>Let&#39;s Encrypt实践指北 | Poseiden&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
+  <meta name="description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt ，大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Let&#39;s Encrypt实践指北">
 <meta property="og:url" content="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/index.html">
 <meta property="og:site_name" content="Poseiden&#39;s Blog">
-<meta property="og:description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
+<meta property="og:description" content="初衷一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— Let’s Encrypt ，大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/WX20200301-190205%402x.png">
 <meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
 <meta property="article:published_time" content="2020-02-29T11:36:44.000Z">
-<meta property="article:modified_time" content="2020-03-01T10:44:54.805Z">
+<meta property="article:modified_time" content="2020-03-01T11:34:42.128Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
+<meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/WX20200301-190205%402x.png">
   
     <link rel="alternate" href="/atom.xml" title="Poseiden&#39;s Blog" type="application/atom+xml">
   
@@ -94,7 +95,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— <strong><em>Let’s Encrypt</em></strong> 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使用，总结下来，以供参考。另外还有一点是，在我查找一些相关文档的过程中发现一个问题，就是由于这方面知识的时效性很差，出现很多信息不对等的情况，所以我将参考过的所有官网文档链接贴在了最后，方便大家在看到这篇文章时，根据链接查看最新官方支持情况。<br>(<strong>Let’s Encrypt</strong> 以下简称 <strong>“LE”</strong>)</p>
+        <h2 id="初衷"><a href="#初衷" class="headerlink" title="初衷"></a>初衷</h2><p>一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— <strong><em>Let’s Encrypt</em></strong> ，大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使用，总结下来，以供参考。另外，在我查找一些相关文档的过程中发现一个问题，就是由于这方面知识的时效性很差，出现很多信息不对等的情况，索性我将参考过的所有官网文档链接贴在了最后，方便大家在看到这篇文章时，根据链接查看最新官方支持情况。<br>(<strong>Let’s Encrypt</strong> 以下简称 <strong>“LE”</strong>)</p>
 <a id="more"></a>
 
 <h2 id="Let’s-Encrypt"><a href="#Let’s-Encrypt" class="headerlink" title="Let’s Encrypt"></a>Let’s Encrypt</h2><h3 id="不支持IP绑定"><a href="#不支持IP绑定" class="headerlink" title="不支持IP绑定"></a>不支持IP绑定</h3><p>首先说明的是，本来基于成本考虑，是没有打算另购买一个域名来实践HTTPS的，因为市面上的一些主流证书都可以既支持域名，又可以支持公有IP。但是由LE官方论坛得知，目前只支持域名，并也没有计划支持公有IP。所以我就打消了这个念头，转而在阿里云上单独购买了一个域名。</p>
@@ -103,91 +104,42 @@
 <h2 id="ACME-客户端-——-Cerbot"><a href="#ACME-客户端-——-Cerbot" class="headerlink" title="ACME 客户端 —— Cerbot"></a>ACME 客户端 —— Cerbot</h2><p>搞清了关于证书方面的知识，那么我们接下来看看如何实践。在客户端方面，LE支持很多种不同的证书申请客户端，官方推荐的为Certbot，但值得注意的是，无论选择哪种客户端，都必须支持 <strong>ACME的v2</strong> 版本，因为从2019年的11月开始，LE将 <strong>停止通过ACMEv1进行账号注册</strong>，计划于2020年的6月开始将停止新域名的验证。</p>
 <h3 id="Certbot-的选择"><a href="#Certbot-的选择" class="headerlink" title="Certbot 的选择"></a>Certbot 的选择</h3><p>个人建议在实践时使用更为推荐的certbot-auto客户端，在官方的解释中，certbot-auto相当于certbot的wrapper，使用它能自动选择最新版本的cerbot，对已有cerbot进行升级等操作。并且因为certbot运行时需要用到python环境，所以对应的依赖也能自动装载到python的虚拟环境中。</p>
 <h3 id="Certbot-插件选择"><a href="#Certbot-插件选择" class="headerlink" title="Certbot 插件选择"></a>Certbot 插件选择</h3><p>使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下表：</p>
-<table>
-<thead>
-<tr>
-<th align="left">Plugin</th>
-<th align="center">Certificate</th>
-<th align="center">Install</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">apache</td>
-<td align="center">✅</td>
-<td align="center">✅</td>
-</tr>
-<tr>
-<td align="left">nginx</td>
-<td align="center">✅</td>
-<td align="center">✅</td>
-</tr>
-<tr>
-<td align="left">webroot</td>
-<td align="center">✅</td>
-<td align="center">❌</td>
-</tr>
-<tr>
-<td align="left">standalone</td>
-<td align="center">✅</td>
-<td align="center">❌</td>
-</tr>
-<tr>
-<td align="left">DNS plugins</td>
-<td align="center">✅</td>
-<td align="center">❌</td>
-</tr>
-<tr>
-<td align="left">manual</td>
-<td align="center">✅</td>
-<td align="center">❌</td>
-</tr>
-</tbody></table>
+<p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/WX20200301-190205%402x.png" alt=""></p>
 <p>在申请证书的过程中，LE需要对该域名的所有权进行验证，而以上几个插件都支持了 http-01 或 dns-01中的一种，亦或是同时支持两种。不同的验证方式会有不同的操作，这个后面会说。</p>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>好了，上面啰啰嗦嗦说了这么多，下面可以进入到实战环节了。我们以申请通配符证书为例。</p>
-<ol>
-<li><p>首先安装certbot-auto</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line">sudo mv certbot-auto /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chown root /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chmod 0755 /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">/usr/<span class="built_in">local</span>/bin/certbot-auto --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取证书<br> 这里背景是这样的，由于我们需要申请通配符证书，LE官方FAQ指出只能通过 <code>dns-01</code> 的方式来验证。插件选择 <code>manual</code>,表示手动方式来配置。所以就有了以下这条命令。</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certbot-auto certonly  </span><br><span class="line">\ -d *.your_domain.com --manual --preferred-challenges dns </span><br><span class="line">\ --server https://acme-v02.api.letsencrypt.org/directory</span><br></pre></td></tr></table></figure>
+<h4 id="安装certbot-auto"><a href="#安装certbot-auto" class="headerlink" title="安装certbot-auto"></a>安装certbot-auto</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line">sudo mv certbot-auto /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chown root /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">sudo chmod 0755 /usr/<span class="built_in">local</span>/bin/certbot-auto</span><br><span class="line">/usr/<span class="built_in">local</span>/bin/certbot-auto --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
 
-<p> 这里几个参数着重说一下：</p>
+<h4 id="获取证书"><a href="#获取证书" class="headerlink" title="获取证书"></a>获取证书</h4><p>这里背景是这样的，由于我们需要申请通配符证书，LE官方FAQ指出只能通过 <code>dns-01</code> 的方式来验证。插件选择 <code>manual</code>,表示手动方式来配置。所以就有了以下这条命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certbot-auto certonly  </span><br><span class="line">\ -d *.your_domain.com --manual --preferred-challenges dns </span><br><span class="line">\ --server https://acme-v02.api.letsencrypt.org/directory</span><br></pre></td></tr></table></figure>
+
+<p>这里几个参数着重说一下：</p>
 <ul>
-<li><p><strong>certonly</strong>: 表示使用certbot只用来申请获取证书，而不做安装操作。</p>
-</li>
-<li><p><strong>-d</strong>: 域名。这里注意，通配符证书一定配置为 <code>*.domain.com</code>，而不是 <code>domain.com</code></p>
-</li>
-<li><p><strong>–manual</strong>: 手动模式，理论上也可以选择 <code>DNS plugins</code></p>
-</li>
-<li><p><strong>–preferred-challenges</strong>: 虽然manual模式下是同时支持两种验证方式的，而通配符证书需要采用 <code>dns-01</code> 验证方式</p>
-</li>
-<li><p><strong>–server</strong>: ACME v2 验证使用的具体地址</p>
+<li><strong>certonly</strong>: 表示使用certbot只用来申请获取证书，而不做安装操作。</li>
+<li><strong>-d</strong>: 域名。这里注意，通配符证书一定配置为 <code>*.domain.com</code>，而不是 <code>domain.com</code></li>
+<li><strong>–manual</strong>: 手动模式，理论上也可以选择 <code>DNS plugins</code></li>
+<li><strong>–preferred-challenges</strong>: 虽然manual模式下是同时支持两种验证方式的，而通配符证书需要采用 <code>dns-01</code> 验证方式</li>
+<li><strong>–server</strong>: ACME v2 验证使用的具体地址</li>
+</ul>
 </br>
 
-<p>返回的命令行输出如下：</p>
-</br>
+<p>返回的命令行输出如下：<br></br></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Saving debug <span class="built_in">log</span> to /var/<span class="built_in">log</span>/letsencrypt/letsencrypt.log</span><br><span class="line">Plugins selected: Authenticator manual, Installer None</span><br><span class="line">Enter email address (used <span class="keyword">for</span> urgent renewal and security notices) (Enter <span class="string">'c'</span> to</span><br><span class="line">cancel): your_email@gmail.com</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please <span class="built_in">read</span> the Terms of Service at</span><br><span class="line">https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must</span><br><span class="line">agree <span class="keyword">in</span> order to register with the ACME server at</span><br><span class="line">https://acme-v02.api.letsencrypt.org/directory</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">(A)gree/(C)ancel: A</span><br><span class="line"></span><br><span class="line">Plugins selected: Authenticator manual, Installer None</span><br><span class="line">Obtaining a new certificate</span><br><span class="line">Performing the following challenges:</span><br><span class="line">dns-01 challenge <span class="keyword">for</span> your_domain.com</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">NOTE: The IP of this machine will be publicly logged as having requested this</span><br><span class="line">certificate. If you<span class="string">'re running certbot in manual mode on a machine that is not</span></span><br><span class="line"><span class="string">your server, please ensure you'</span>re okay with that.</span><br><span class="line"></span><br><span class="line">Are you OK with your IP being logged?</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">(Y)es/(N)o: y</span><br></pre></td></tr></table></figure>
-从这里开始需要一些交互：</li>
-<li><p>第一个：输入联系人的email，方便以后接受更新证书提醒和安全提示的</p>
-</li>
-<li><p>第二个：同意条款</p>
-</li>
-<li><p>第三个：记录此IP为申请证书的机器</p>
-</br>
+<p>从这里开始需要一些交互：</p>
+<ul>
+<li>第一个：输入联系人的email，方便以后接受更新证书提醒和安全提示的</li>
+<li>第二个：同意条款</li>
+<li>第三个：记录此IP为申请证书的机器</br>
+
 </li>
 </ul>
-</li>
-<li><p>DNS配置<br>上步之后，命令行输出如下：</p>
+<h4 id="DNS配置"><a href="#DNS配置" class="headerlink" title="DNS配置"></a>DNS配置</h4><p>上步之后，命令行输出如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Please deploy a DNS TXT record under the name</span><br><span class="line">_acme-challenge.your_domain.com with the following value:</span><br><span class="line"></span><br><span class="line">`一串base64编码`</span><br><span class="line"></span><br><span class="line">Before continuing, verify the record is deployed.</span><br><span class="line">-------------------------------------------------------------------------------</span><br><span class="line">Press Enter to Continue</span><br></pre></td></tr></table></figure>
 <p>这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以Azure为例，如下图。</p>
 <p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg" alt=""></p>
 <p>配置好之后，过一分钟左右，利用dig命令查询一下是否生效：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    </span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;_acme-challenge.archguard.org.        IN      TXT</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">_acme-challenge.archguard.org. 599 IN  TXT     <span class="string">"刚才那串base64编码"</span></span><br></pre></td></tr></table></figure>
-<p>这里一定注意,有<code>ANSWER SECTION</code>才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。</p>
-</br></li>
-<li><p>成功<br>网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 <code>/etc/letsencrypt/archive/your_domain.com</code> 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。</p>
-</li>
-</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    </span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;_acme-challenge.your_domain.com.        IN      TXT</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">_acme-challenge.your_domain.com. 599 IN  TXT     <span class="string">"刚才那串base64编码"</span></span><br></pre></td></tr></table></figure>
+<p>这里一定注意,有<code>ANSWER SECTION</code>才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。<br></br></p>
+<h4 id="成功"><a href="#成功" class="headerlink" title="成功"></a>成功</h4><p>网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 <code>/etc/letsencrypt/archive/your_domain.com</code> 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。</p>
 <h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
 <li><a href="https://letsencrypt.org/docs/faq/" target="_blank" rel="noopener">Let’s Encrypt - FAQ (中英文)</a></li>
 <li><a href="https://letsencrypt.org/docs/rate-limits/" target="_blank" rel="noopener">Let’s Encrypt - Rate Limit (中英文)</a></li>
@@ -200,7 +152,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78wrb02000413pyb92745zx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78yjbsm00042vqa1m8qf248" class="article-share-link">Share</a>
       
       
     </footer>
