@@ -5,7 +5,7 @@ tags:
 ---
 
 ## 初衷
-一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— ***Let's Encrypt*** 。大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使用，总结下来，以供参考。另外还有一点是，在我查找一些相关文档的过程中发现一个问题，就是由于这方面知识的时效性很差，出现很多信息不对等的情况，所以我将参考过的所有官网文档链接贴在了最后，方便大家在看到这篇文章时，根据链接查看最新官方支持情况。
+一直以来，对于HTTPS证书的概念都含糊不清，似懂非懂。原因是自己之前比较懒，对于一些需要前置条件（买域名买证书等）才能玩的东西总是积极不起来（对！一定是穷）。而最近刚好有个项目需要配置HTTPS，也购买了域名（其实实践时自己还是买了域名），尤其是知道了本文要介绍的“神器” —— ***Let's Encrypt*** ，大大简化了学习成本和时间。所以趁着一些碎片化的时间，研究了下证书的一些基本概念以及使用，总结下来，以供参考。另外，在我查找一些相关文档的过程中发现一个问题，就是由于这方面知识的时效性很差，出现很多信息不对等的情况，索性我将参考过的所有官网文档链接贴在了最后，方便大家在看到这篇文章时，根据链接查看最新官方支持情况。
 (**Let's Encrypt** 以下简称 **“LE”**)
 
 <!--more-->
@@ -30,15 +30,7 @@ tags:
 ### Certbot 插件选择
 使用Certbot主要分两部分，一部分为申请获取证书，另一部分为在基础设置上安装证书。而Cerbot本身支持很多插件来简化这些操作。详情见下表：
 
-|  Plugin     | Certificate | Install |
-| :------     | :--------:  | :---:   |
-| apache      | ✅          | ✅      |
-| nginx       | ✅          | ✅      |
-| webroot     | ✅          | ❌      |
-| standalone  | ✅          | ❌      |
-| DNS plugins | ✅          | ❌      |
-| manual      | ✅          |  ❌     |
-
+![](https://poseiden-blog.oss-cn-beijing.aliyuncs.com/WX20200301-190205%402x.png)
 
 在申请证书的过程中，LE需要对该域名的所有权进行验证，而以上几个插件都支持了 http-01 或 dns-01中的一种，亦或是同时支持两种。不同的验证方式会有不同的操作，这个后面会说。
 
@@ -46,102 +38,104 @@ tags:
 
 好了，上面啰啰嗦嗦说了这么多，下面可以进入到实战环节了。我们以申请通配符证书为例。
 
-1. 首先安装certbot-auto
-    ```bash 
-    cd ~
-    wget https://dl.eff.org/certbot-auto
-    sudo mv certbot-auto /usr/local/bin/certbot-auto
-    sudo chown root /usr/local/bin/certbot-auto
-    sudo chmod 0755 /usr/local/bin/certbot-auto
-    /usr/local/bin/certbot-auto --help
-    ```
+#### 安装certbot-auto
+```bash 
+cd ~
+wget https://dl.eff.org/certbot-auto
+sudo mv certbot-auto /usr/local/bin/certbot-auto
+sudo chown root /usr/local/bin/certbot-auto
+sudo chmod 0755 /usr/local/bin/certbot-auto
+/usr/local/bin/certbot-auto --help
+```
 
-2. 获取证书
-    这里背景是这样的，由于我们需要申请通配符证书，LE官方FAQ指出只能通过 `dns-01` 的方式来验证。插件选择 `manual`,表示手动方式来配置。所以就有了以下这条命令。
-    ```bash
-    certbot-auto certonly  
-    \ -d *.your_domain.com --manual --preferred-challenges dns 
-    \ --server https://acme-v02.api.letsencrypt.org/directory
-    ```
+#### 获取证书
+这里背景是这样的，由于我们需要申请通配符证书，LE官方FAQ指出只能通过 `dns-01` 的方式来验证。插件选择 `manual`,表示手动方式来配置。所以就有了以下这条命令。
+```bash
+certbot-auto certonly  
+\ -d *.your_domain.com --manual --preferred-challenges dns 
+\ --server https://acme-v02.api.letsencrypt.org/directory
+```
     
-    这里几个参数着重说一下：
-    - **certonly**: 表示使用certbot只用来申请获取证书，而不做安装操作。
-    - **-d**: 域名。这里注意，通配符证书一定配置为 `*.domain.com`，而不是 `domain.com`
-    - **--manual**: 手动模式，理论上也可以选择 `DNS plugins`
-    - **--preferred-challenges**: 虽然manual模式下是同时支持两种验证方式的，而通配符证书需要采用 `dns-01` 验证方式
-    - **--server**: ACME v2 验证使用的具体地址
+这里几个参数着重说一下：
+- **certonly**: 表示使用certbot只用来申请获取证书，而不做安装操作。
+- **-d**: 域名。这里注意，通配符证书一定配置为 `*.domain.com`，而不是 `domain.com`
+- **--manual**: 手动模式，理论上也可以选择 `DNS plugins`
+- **--preferred-challenges**: 虽然manual模式下是同时支持两种验证方式的，而通配符证书需要采用 `dns-01` 验证方式
+- **--server**: ACME v2 验证使用的具体地址
 
-    </br>
+</br>
 
-    返回的命令行输出如下：
-    </br>
-    ```bash
-    Saving debug log to /var/log/letsencrypt/letsencrypt.log
-    Plugins selected: Authenticator manual, Installer None
-    Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-    cancel): your_email@gmail.com
+返回的命令行输出如下：
+</br>
 
-    -------------------------------------------------------------------------------
-    Please read the Terms of Service at
-    https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must
-    agree in order to register with the ACME server at
-    https://acme-v02.api.letsencrypt.org/directory
-    -------------------------------------------------------------------------------
-    (A)gree/(C)ancel: A
+```bash
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Plugins selected: Authenticator manual, Installer None
+Enter email address (used for urgent renewal and security notices) (Enter 'c' to
+cancel): your_email@gmail.com
 
-    Plugins selected: Authenticator manual, Installer None
-    Obtaining a new certificate
-    Performing the following challenges:
-    dns-01 challenge for your_domain.com
+-------------------------------------------------------------------------------
+Please read the Terms of Service at
+https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must
+agree in order to register with the ACME server at
+https://acme-v02.api.letsencrypt.org/directory
+-------------------------------------------------------------------------------
+(A)gree/(C)ancel: A
 
-    -------------------------------------------------------------------------------
-    NOTE: The IP of this machine will be publicly logged as having requested this
-    certificate. If you're running certbot in manual mode on a machine that is not
-    your server, please ensure you're okay with that.
+Plugins selected: Authenticator manual, Installer None
+Obtaining a new certificate
+Performing the following challenges:
+dns-01 challenge for your_domain.com
 
-    Are you OK with your IP being logged?
-    -------------------------------------------------------------------------------
-    (Y)es/(N)o: y
-    ```
-    从这里开始需要一些交互：
-    - 第一个：输入联系人的email，方便以后接受更新证书提醒和安全提示的
-    - 第二个：同意条款
-    - 第三个：记录此IP为申请证书的机器
-    </br>
+-------------------------------------------------------------------------------
+NOTE: The IP of this machine will be publicly logged as having requested this
+certificate. If you're running certbot in manual mode on a machine that is not
+your server, please ensure you're okay with that.
 
-3.  DNS配置
-    上步之后，命令行输出如下：
-    ```bash
-    -------------------------------------------------------------------------------
-    Please deploy a DNS TXT record under the name
-    _acme-challenge.your_domain.com with the following value:
+Are you OK with your IP being logged?
+-------------------------------------------------------------------------------
+(Y)es/(N)o: y
+```
+从这里开始需要一些交互：
+- 第一个：输入联系人的email，方便以后接受更新证书提醒和安全提示的
+- 第二个：同意条款
+- 第三个：记录此IP为申请证书的机器
+</br>
 
-    `一串base64编码`
+#### DNS配置
+上步之后，命令行输出如下：
+```bash
+-------------------------------------------------------------------------------
+Please deploy a DNS TXT record under the name
+_acme-challenge.your_domain.com with the following value:
 
-    Before continuing, verify the record is deployed.
-    -------------------------------------------------------------------------------
-    Press Enter to Continue
-    ```
-    这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以Azure为例，如下图。
+`一串base64编码`
 
-    ![](https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg)
+Before continuing, verify the record is deployed.
+-------------------------------------------------------------------------------
+Press Enter to Continue
+```
+这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以Azure为例，如下图。
 
-    配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
-    ```bash
-    $ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    
+![](https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg)
 
-    ;; OPT PSEUDOSECTION:
-    ; EDNS: version: 0, flags:; udp: 512
-    ;; QUESTION SECTION:
-    ;_acme-challenge.archguard.org.        IN      TXT
+配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
+```bash
+$ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    
 
-    ;; ANSWER SECTION:
-    _acme-challenge.archguard.org. 599 IN  TXT     "刚才那串base64编码"
-    ```
-    这里一定注意,有`ANSWER SECTION`才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。
-    </br>
-4. 成功
-   网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;_acme-challenge.your_domain.com.        IN      TXT
+
+;; ANSWER SECTION:
+_acme-challenge.your_domain.com. 599 IN  TXT     "刚才那串base64编码"
+```
+这里一定注意,有`ANSWER SECTION`才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。
+</br>
+
+#### 成功
+网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。
 
 ## Ref
 - [Let's Encrypt - FAQ (中英文)](https://letsencrypt.org/docs/faq/)
