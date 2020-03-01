@@ -120,13 +120,13 @@ tags:
     -------------------------------------------------------------------------------
     Press Enter to Continue
     ```
-    这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以azure为例，如下图。
-    </br>
-    ![Azure dns](https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg?Expires=1583057829&OSSAccessKeyId=TMP.hjHSsMVeF8hjWBQrLEW1UFYToNWL8xmBh5XMwtqxvS8114hUFWdJ783SZoSFVmyy5yiXTU9DU46zAaYqzgf3ov4M5MLDfPib5drmE4DJ33JMu69RMQBdsoggxAsXyE.tmp&Signature=ILcUgQDlOQevU%2Fbb9abuGLDie1g%3D)
-    </br>
+    这时不要着急继续，按照上述提示，需要去你的DNS服务提供商那里手动配置一条记录，用于验证你对此域名的所有权。以Azure为例，如下图。
+
+    ![](https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg)
+
     配置好之后，过一分钟左右，利用dig命令查询一下是否生效：
     ```bash
-    $ dig  -t txt  _acme-challenge.archguard.org @8.8.8.8    
+    $ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    
 
     ;; OPT PSEUDOSECTION:
     ; EDNS: version: 0, flags:; udp: 512
@@ -139,7 +139,7 @@ tags:
     这里一定注意,有`ANSWER SECTION`才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。
     </br>
 4. 成功
-   网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，我就不在这里费口舌了。如果遇到问题，可以继续探讨。
+   网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 `/etc/letsencrypt/archive/your_domain.com` 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，我就不在这里赘述了。如果遇到问题，可以继续探讨。
 
 ## Ref
 - [Letsencrypt - FAQ (中英文)](https://letsencrypt.org/docs/faq/)
