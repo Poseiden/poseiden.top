@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
 <meta property="article:published_time" content="2020-02-29T11:36:44.000Z">
-<meta property="article:modified_time" content="2020-03-01T10:41:05.552Z">
+<meta property="article:modified_time" content="2020-03-01T10:44:54.805Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/azure_dns.jpg">
@@ -185,14 +185,14 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig  -t txt  _acme-challenge.your_domain.com @8.8.8.8    </span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 512</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;_acme-challenge.archguard.org.        IN      TXT</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">_acme-challenge.archguard.org. 599 IN  TXT     <span class="string">"刚才那串base64编码"</span></span><br></pre></td></tr></table></figure>
 <p>这里一定注意,有<code>ANSWER SECTION</code>才算成功，我第一次配置错了没有出来这个，但也没有注意到，于是敲回车键就挂掉了。不过大家在实践中如果挂掉了也不要担心，重新执行命令即可。</p>
 </br></li>
-<li><p>成功<br>网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 <code>/etc/letsencrypt/archive/your_domain.com</code> 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，我就不在这里赘述了。如果遇到问题，可以继续探讨。</p>
+<li><p>成功<br>网络没什么问题的话这步就应该已经成功了，输出的信息会提示你证书生成的所在位置。不出意外的话应该在 <code>/etc/letsencrypt/archive/your_domain.com</code> 下。这里值得注意的是，LE申请的证书有效期一般都是为三个月，所以到期后需要再次申请，网上相关自动化工具一抓一大把，就不在这里赘述了。如果遇到问题，可以继续探讨。</p>
 </li>
 </ol>
 <h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
-<li><a href="https://letsencrypt.org/docs/faq/" target="_blank" rel="noopener">Letsencrypt - FAQ (中英文)</a></li>
-<li><a href="https://letsencrypt.org/docs/rate-limits/" target="_blank" rel="noopener">Letsencrypt - Rate Limit (中英文)</a></li>
-<li><a href="https://letsencrypt.org/docs/challenge-types/" target="_blank" rel="noopener">Letsencrypt - Challenge Types (中英文)</a></li>
-<li><a href="https://community.letsencrypt.org/t/end-of-life-plan-for-acmev1/88430" target="_blank" rel="noopener">Letsencrypt - End of Life Plan for ACMEv1</a></li>
+<li><a href="https://letsencrypt.org/docs/faq/" target="_blank" rel="noopener">Let’s Encrypt - FAQ (中英文)</a></li>
+<li><a href="https://letsencrypt.org/docs/rate-limits/" target="_blank" rel="noopener">Let’s Encrypt - Rate Limit (中英文)</a></li>
+<li><a href="https://letsencrypt.org/docs/challenge-types/" target="_blank" rel="noopener">Let’s Encrypt - Challenge Types (中英文)</a></li>
+<li><a href="https://community.letsencrypt.org/t/end-of-life-plan-for-acmev1/88430" target="_blank" rel="noopener">Let’s Encrypt - End of Life Plan for ACMEv1</a></li>
 <li><a href="https://certbot.eff.org/docs/install.html#certbot-auto" target="_blank" rel="noopener">Certbot - Certbot-auto</a></li>
 <li><a href="https://certbot.eff.org/docs/using.html#getting-certificates-and-choosing-plugins" target="_blank" rel="noopener">Certbot - Getting certificates and plugins</a></li>
 </ul>
@@ -200,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78wme330004zqpn4gbo7hls" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/29/Let's%20Encrypt%E5%AE%9E%E8%B7%B5%E6%8C%87%E5%8C%97/" data-id="ck78wrb02000413pyb92745zx" class="article-share-link">Share</a>
       
       
     </footer>
