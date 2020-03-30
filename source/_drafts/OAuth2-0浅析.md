@@ -1,5 +1,5 @@
 ---
-title: OAuth2.0浅析
+title: OAuth2.0 之授权码的奥秘
 tags:
 ---
 ## 缘起
@@ -10,6 +10,8 @@ tags:
 ## OAuth
 ### Authorization Code Grant
 ### Client Credentials Grant
+## 适用范围
+
 ## Ref
 - [理解OAuth 2.0](https://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html)
 - [OAuth2.0入门（一）—— 基本概念详解和图文并茂讲解四种授权类型](https://blog.csdn.net/qq_37771475/article/details/103288957)
