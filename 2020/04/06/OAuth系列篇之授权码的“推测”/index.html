@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/1586162496940.jpg">
 <meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/2019112911510128.png">
 <meta property="article:published_time" content="2020-04-06T17:12:38.000Z">
-<meta property="article:modified_time" content="2020-04-06T14:05:01.824Z">
+<meta property="article:modified_time" content="2020-04-06T14:06:14.607Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/WX20200406.png">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-04-06 17:12:38 / Modified: 14:05:01" itemprop="dateCreated datePublished" datetime="2020-04-06T17:12:38+00:00">2020-04-06</time>
+              <time title="Created: 2020-04-06 17:12:38 / Modified: 14:06:14" itemprop="dateCreated datePublished" datetime="2020-04-06T17:12:38+00:00">2020-04-06</time>
             </span>
 
           
@@ -212,10 +212,13 @@
 
 <p>最初，当我查阅有关OAuth的资料时，发现网上这些文章多数是在讲解<strong>OAuth</strong>的“流程”，或者<strong>OAuth</strong>“怎么用”。而很少有人去理解和关注OAuth本身的设计意图。而我是如何看到这点的呢，原因是当我在了解几种不同授权模式时，对于其中的授权码模式总是含糊不清，授权码模式在四个模式中功能最完整，流程最复杂（相对来说），而对比其他三种，大脑总是倾向于记住那些简单易懂的。当我想通过了解设计思路以及意图来加深对这种模式的理解时，发现除了原论文以外，可参考的文档寥寥无几。这让我不禁在搞清楚问题之余，萌生出了写下这篇文章的念头。不仅记录思维，也可以供后面大家的参考讨论。<br>哦，对了，本文不会再对授权模式中的<strong>简化模式（Implicit Flow）</strong>和<strong>密码模式（Password Grant）</strong>赘述, 因为在<strong>OAuth</strong>官网，这两者皆已被标注为<strong>Legacy</strong>。<br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/1586162496940.jpg" alt=""></p>
 <h2 id="OAuth"><a href="#OAuth" class="headerlink" title="OAuth"></a>OAuth</h2><p>好，现在让我们回到问题本身。不知道大家在看<strong>授权模式（Authorization Code）</strong>时是否曾经跟我有一样的疑惑，简单来说，对于这种模式，既然是授权服务器先给予客户端一个授权码，客户端拿着授权码再回头向授权服务器申请一个访问令牌。那为什么不直接设计成，在用户选择同意授权之后，授权服务器直接将令牌返回给客户端？反而中间需要一个“授权码”来做一次“翻译”？这样做的又是在哪里？多了一次交互的成本。从这方面来看，效果可能还不如同门师兄弟的 <strong>客户端模式（Client Credentials）</strong> 来的直接。<br>对于这个问题，如大家所知，OAuth设计出来就是是用于解决授权问题的，那么说到授权，安全自然就是很重要的一个点，很多问题从安全的角度出发去思考也就不难理解了。 </p>
-<h2 id="Authorization-Code-Grant"><a href="#Authorization-Code-Grant" class="headerlink" title="Authorization Code Grant"></a>Authorization Code Grant</h2><p>首先，我们贴出这种模式的时序图。<br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/2019112911510128.png" alt=""><br>（图摘自网络，连接在文末）<br>如果我们按照刚才的思路所说，假设在第一步返回令牌，那么面临着一个问题就是需要把<strong>Client ID</strong>和<strong>Client Secret</strong>也在第一步传给授权服务器，不然的话，就无法校验客户端是否用的是自己的<strong>Client ID</strong>证明 你是你的问题）。那么有同学会说了，如果在第一步就把这两个信息传给授权服务器呢，会有什么问题？那么就是<strong>Client Secret</strong>面临着泄露的风险。泄露的方式包括请求被拦截，非<strong>HTTPS</strong>等等，个人的理解是，只要请求是对用户可见的（尤其是还要通过浏览器），就都有可能泄露。<br>那么像<strong>OAuth</strong>这样的设计中，在第二步用第一步的授权码去换取令牌，就可以很好的解决这个问题，因为第二步是客户端与授权服务器的独立后台交互，对用户不可见，也不会把行为暴露给浏览器。将授权码和<strong>Client ID</strong>， <strong>Client Secret</strong>一并发送，获传取令牌。这样直接避免了网络传输中被窥探，提高了安全性。</p>
+<h2 id="Authorization-Code-Grant"><a href="#Authorization-Code-Grant" class="headerlink" title="Authorization Code Grant"></a>Authorization Code Grant</h2><p>首先，我们贴出这种模式的时序图。</p>
+<p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/2019112911510128.png" alt=""></p>
+<p>（图摘自网络，连接在文末）</p>
+<p>如果我们按照刚才的思路所说，假设在第一步返回令牌，那么面临着一个问题就是需要把<strong>Client ID</strong>和<strong>Client Secret</strong>也在第一步传给授权服务器，不然的话，就无法校验客户端是否用的是自己的<strong>Client ID</strong>证明 你是你的问题）。那么有同学会说了，如果在第一步就把这两个信息传给授权服务器呢，会有什么问题？那么就是<strong>Client Secret</strong>面临着泄露的风险。泄露的方式包括请求被拦截，非<strong>HTTPS</strong>等等，个人的理解是，只要请求是对用户可见的（尤其是还要通过浏览器），就都有可能泄露。<br>那么像<strong>OAuth</strong>这样的设计中，在第二步用第一步的授权码去换取令牌，就可以很好的解决这个问题，因为第二步是客户端与授权服务器的独立后台交互，对用户不可见，也不会把行为暴露给浏览器。将授权码和<strong>Client ID</strong>， <strong>Client Secret</strong>一并发送，获传取令牌。这样直接避免了网络传输中被窥探，提高了安全性。</p>
 <p>至此，我们通过以上所有获取到的信息，串起整个流程，并顺带“推测”一下授权服务器端的动作。（只包括 Happy Path 的主流程）</p>
 <p>第一步，第三方客户端将用户导向至授权服务器，用户选择是否授权以及授权范围。<br>第二步，授权服务器拿到上一步用户侧的输入之后，在后台生成一组信息，包括了授权码，授权范围，用户详情等信息，并以授权码作为<strong>Key</strong>。<br>第三步，授权服务器将上一步生成的授权码作为第一步的请求响应返回给浏览器，浏览器再通过302状态附上授权码重定向至第一步客户端指定的回调地址，客户端拿到授权码。<br>第四步，客户端通过后台发送授权码，<strong>Client ID</strong>，<strong>Client Secret</strong>，至授权服务器。<br>第五步，授权服务器对比<strong>Client ID</strong>和<strong>Client Secret</strong>，确认无误之后，再以授权码作为<strong>Key</strong>，查找到对应第二步生成的那组信息，将这组信息转化成访问令牌（也许还有刷新令牌），返回给客户端。</p>
-<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>以上就是通过自己所掌握的信息来一步步的“推测”出了 <strong>授权码模式</strong> 的设计意图以及大致工作流程。当然，由于本人的知识和信息有限，这篇文章更多的也只是想跟大家抛砖引玉，希望大家在关注如何使用这类协议或框架的同时，也理解到背后的设计思路。同时也希望更多了解<strong>OAuth</strong>或其他安全协议设计的同学，能对本文的不严谨之处共同讨论，或加以斧正。</p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>以上就是通过自己所掌握的信息来一步步的“推测”出了 <strong>授权码模式</strong> 的设计意图以及大致工作流程。当然，由于本人的知识和信息有限，这篇文章更多的也只是想跟大家抛砖引玉，希望大家在关注如何使用这类协议或框架的同时，也理解到背后的设计思路。同时也希望更多了解<strong>OAuth</strong>或其他安全协议设计的同学，能对本文的不严谨之处共同讨论，或加以斧正。</p>
 <h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
 <li><a href="https://oauth.net/" target="_blank" rel="noopener">OAuth 官方网站</a></li>
 <li><a href="https://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">理解OAuth 2.0 - 阮一峰</a></li>
@@ -300,7 +303,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth"><span class="nav-number">2.</span> <span class="nav-text">OAuth</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authorization-Code-Grant"><span class="nav-number">3.</span> <span class="nav-text">Authorization Code Grant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">4.</span> <span class="nav-text">结尾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ref"><span class="nav-number">5.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth"><span class="nav-number">2.</span> <span class="nav-text">OAuth</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authorization-Code-Grant"><span class="nav-number">3.</span> <span class="nav-text">Authorization Code Grant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在后面"><span class="nav-number">4.</span> <span class="nav-text">写在后面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ref"><span class="nav-number">5.</span> <span class="nav-text">Ref</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
