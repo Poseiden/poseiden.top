@@ -20,19 +20,31 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。 开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）开发环境：struts2（其他的和本文无关，故不介绍）（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）">
+  <meta name="description" content="装修平面图">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关">
-<meta property="og:url" content="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:title" content="家装计划大纲">
+<meta property="og:url" content="http://yoursite.com/2020/04/11/7a3bde80/index.html">
 <meta property="og:site_name" content="Poseiden&#39;s Blog">
-<meta property="og:description" content="年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。 开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）开发环境：struts2（其他的和本文无关，故不介绍）（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）">
+<meta property="og:description" content="装修平面图">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2015-12-08T10:40:44.000Z">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/LivingroomBrick.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/LivingroomBrick2.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/TVWall.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/TVWall2.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/Shower.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick2.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick3.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BedroomBrick2.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BedroomBrick3.jpeg">
+<meta property="og:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/Kitchen1.jpeg">
+<meta property="article:published_time" content="2020-04-11T22:08:57.000Z">
 <meta property="article:modified_time" content="2020-04-11T16:20:34.376Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/LivingroomBrick.jpeg">
 
-<link rel="canonical" href="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/">
+<link rel="canonical" href="http://yoursite.com/2020/04/11/7a3bde80/">
 
 
 <script id="page-configurations">
@@ -45,7 +57,7 @@
   };
 </script>
 
-  <title>浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关 | Poseiden's Blog</title>
+  <title>家装计划大纲 | Poseiden's Blog</title>
   
 
 
@@ -160,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/11/7a3bde80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -173,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关
+          家装计划大纲
         </h1>
 
         <div class="post-meta">
@@ -182,16 +194,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2015-12-08 10:40:44" itemprop="dateCreated datePublished" datetime="2015-12-08T10:40:44+00:00">2015-12-08</time>
+              <time title="Created: 2020-04-11 22:08:57 / Modified: 16:20:34" itemprop="dateCreated datePublished" datetime="2020-04-11T22:08:57+00:00">2020-04-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-11 16:20:34" itemprop="dateModified" datetime="2020-04-11T16:20:34+00:00">2020-04-11</time>
-              </span>
 
           
 
@@ -204,19 +210,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。</p>
-<h5 id="开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）"><a href="#开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）" class="headerlink" title="开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）"></a>开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）</h5><h5 id="开发环境：struts2（其他的和本文无关，故不介绍）"><a href="#开发环境：struts2（其他的和本文无关，故不介绍）" class="headerlink" title="开发环境：struts2（其他的和本文无关，故不介绍）"></a>开发环境：struts2（其他的和本文无关，故不介绍）</h5><p>（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）</p>
-<a id="more"></a>
+        <h1 id="装修"><a href="#装修" class="headerlink" title="装修"></a>装修</h1><h2 id="平面图"><a href="#平面图" class="headerlink" title="平面图"></a>平面图</h2><a id="more"></a>
 
-<p>Tomcat部署项目有三种方式，这种讲解说明的教程在网上一抓一大把。而MyEclipse和Idea分别采用了不同的部署项目方式。</p>
-<h3 id="MyEclipse部署项目。"><a href="#MyEclipse部署项目。" class="headerlink" title="MyEclipse部署项目。"></a>MyEclipse部署项目。</h3><ul>
-<li>从目录结构上看，MyEclipse部署项目就是用了最简单粗暴的一种。如果用MyEclipse关联了本地的Tomcat，那么部署就是直接将解压后的war包目录扔到了webapps里，然后启动。这种方式最简单直接，对于一开始使用的初学者来说也比较容易懂。</li>
-</ul>
-<h3 id="Idea部署项目"><a href="#Idea部署项目" class="headerlink" title="Idea部署项目"></a>Idea部署项目</h3><p>大家已经都清楚，Tomcat有一种部署方式是在服务器目录下的<code>conf/Catalina/localhost</code>(如果你使用了这个地址访问你的项目)下生成一个xml文件，文件的名称可以随意指定，但是里面的内容决定了你访问项目的上下文名称以及项目的物理地址。<br>而Idea正是用了这种方式，当你在ide中给服务器指定了项目的物理地址以及访问上下文并启动服务器之后，在你的idea安装目录下（一般是主目录下的隐藏文件夹IntelliJIdea14）的<code>system/tomcat/xxx(你的项目或者模块名称)/conf/Catalina/localhost</code>下也生成一个xml文件。（如果你没有设置上下文，那么这个xml就叫<code>ROOT.xml</code>，否则，就叫你设置的那个名字。）里面通过节点记录了你刚才设置的相关值。这种方式会比较绕，但是在后期便于管理，尤其是像idea这种模块概念分明的ide。</p>
-<h3 id="Web项目目录结构"><a href="#Web项目目录结构" class="headerlink" title="Web项目目录结构"></a>Web项目目录结构</h3><p>在标准的MVC模型的建议中，把页面文件（jsp或者freemarker或者其他）放在web-inf下是安全的行为。但是这只是规范，或者一种标准，要是不遵守也没有逻辑上的问题。下面就来说说放在web-inf中的情况下，实际访问的目录结构是什么样的。</p>
-<p>如果你放到webinf中，是通过struts2等方式请求的。那在访问项目后服务器端的结构就变成了<code>/project/namespace/xxxxx.do</code>。（读者要是不明白可以自行打开浏览器的debugger看）。project是我设置的上下文根，你要不设置就没有这一层，<code>namespace/xxxxx.do</code>是你通过struts2访问页面的请求路径。也就是说，目录结构并不像你在开发环境看到的，其实已经没有了web-inf这一层，（这也是一直我在页面引用js引用不到的原因）。所以你当你在页面使用相对路径引用css文件时，就用<code>../</code>跳出上一级目录就能引用到。（前提是你把css或者js文件别放在webinf中）。<br>如果你使用的是以<code>/</code>开头的绝对路径，那么在你设置了上下根之后，引用时需要加上你的上下文名称，因为jsp等页面在写<code>/</code>时实际上引用到了服务器根路径下，所以你的写法应该是<code>/project/xxx.js</code>。如果你没有设置上下根，那么直接就写<code>/xxx.js</code>就好。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实在这次问题中主要绊倒我的就是在页面放到webinf之后，不知道怎么写外部js的引用路径问题。最后通过浏览器的调试得知项目的目录，问题才得以解决。</p>
-
+<h2 id="客厅"><a href="#客厅" class="headerlink" title="客厅"></a>客厅</h2><h4 id="墙面"><a href="#墙面" class="headerlink" title="墙面"></a>墙面</h4><p>白色乳胶漆（暂定）</p>
+<h4 id="地板"><a href="#地板" class="headerlink" title="地板"></a>地板</h4><p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/LivingroomBrick.jpeg" alt=""><br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/LivingroomBrick2.jpeg" alt=""></p>
+<h4 id="电视墙"><a href="#电视墙" class="headerlink" title="电视墙"></a>电视墙</h4><p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/TVWall.jpeg" alt=""><br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/TVWall2.jpeg" alt=""></p>
+<hr>
+<h2 id="卫生间"><a href="#卫生间" class="headerlink" title="卫生间"></a>卫生间</h2><h4 id="干湿分离"><a href="#干湿分离" class="headerlink" title="干湿分离"></a>干湿分离</h4><p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/Shower.jpeg" alt=""></p>
+<h4 id="下水除臭"><a href="#下水除臭" class="headerlink" title="下水除臭"></a>下水除臭</h4><h4 id="下水管隔音"><a href="#下水管隔音" class="headerlink" title="下水管隔音"></a>下水管隔音</h4><h4 id="插座"><a href="#插座" class="headerlink" title="插座"></a>插座</h4><p>要求：两个（马桶边一个，洗漱池上的镜柜 附近 一个）</p>
+<h4 id="墙壁"><a href="#墙壁" class="headerlink" title="墙壁"></a>墙壁</h4><p>材料：非抛光面瓷砖<br>颜色：深色<br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick.jpeg" alt=""><br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick2.jpeg" alt=""><br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BathroomBrick3.jpeg" alt=""></p>
+<hr>
+<h2 id="主卧"><a href="#主卧" class="headerlink" title="主卧"></a>主卧</h2><h4 id="地面"><a href="#地面" class="headerlink" title="地面"></a>地面</h4><p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BedroomBrick2.jpeg" alt=""><br><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/BedroomBrick3.jpeg" alt=""></p>
+<hr>
+<h2 id="次卧"><a href="#次卧" class="headerlink" title="次卧"></a>次卧</h2><h4 id="地面-1"><a href="#地面-1" class="headerlink" title="地面"></a>地面</h4><p>同主卧</p>
+<hr>
+<h2 id="厨房"><a href="#厨房" class="headerlink" title="厨房"></a>厨房</h2><h4 id="墙"><a href="#墙" class="headerlink" title="墙"></a>墙</h4><p><img src="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/Finish/Kitchen1.jpeg" alt=""></p>
+<hr>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h4 id="新风成本？"><a href="#新风成本？" class="headerlink" title="新风成本？"></a>新风成本？</h4><h4 id="空调？"><a href="#空调？" class="headerlink" title="空调？"></a>空调？</h4><h4 id="阳台的小九九能不能打掉？"><a href="#阳台的小九九能不能打掉？" class="headerlink" title="阳台的小九九能不能打掉？"></a>阳台的小九九能不能打掉？</h4><h4 id="阳台能否放洗衣机？（下水）"><a href="#阳台能否放洗衣机？（下水）" class="headerlink" title="阳台能否放洗衣机？（下水）"></a>阳台能否放洗衣机？（下水）</h4><h4 id="洗手间的小九九能否放下洗衣机？"><a href="#洗手间的小九九能否放下洗衣机？" class="headerlink" title="洗手间的小九九能否放下洗衣机？"></a>洗手间的小九九能否放下洗衣机？</h4>
     </div>
 
     
@@ -231,13 +241,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2015/11/20/%E6%8A%98%E8%85%BEOctopress%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97/" rel="prev" title="折腾Octopress的一点心得">
-      <i class="fa fa-chevron-left"></i> 折腾Octopress的一点心得
+    <a href="/2020/04/06/OAuth%E7%B3%BB%E5%88%97%E7%AF%87%E4%B9%8B%E6%8E%88%E6%9D%83%E7%A0%81%E7%9A%84%E2%80%9C%E6%8E%A8%E6%B5%8B%E2%80%9D/" rel="prev" title="OAuth系列篇之授权码的“推测”">
+      <i class="fa fa-chevron-left"></i> OAuth系列篇之授权码的“推测”
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2016/03/23/%E5%AF%B9python%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/" rel="next" title="对Python高阶函数的一些理解">
-      对Python高阶函数的一些理解 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -297,7 +304,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）"><span class="nav-number">1.</span> <span class="nav-text">开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开发环境：struts2（其他的和本文无关，故不介绍）"><span class="nav-number">2.</span> <span class="nav-text">开发环境：struts2（其他的和本文无关，故不介绍）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyEclipse部署项目。"><span class="nav-number"></span> <span class="nav-text">MyEclipse部署项目。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Idea部署项目"><span class="nav-number"></span> <span class="nav-text">Idea部署项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web项目目录结构"><span class="nav-number"></span> <span class="nav-text">Web项目目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#装修"><span class="nav-number">1.</span> <span class="nav-text">装修</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#平面图"><span class="nav-number">1.1.</span> <span class="nav-text">平面图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客厅"><span class="nav-number">1.2.</span> <span class="nav-text">客厅</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#墙面"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">墙面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#地板"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">地板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#电视墙"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">电视墙</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卫生间"><span class="nav-number">1.3.</span> <span class="nav-text">卫生间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#干湿分离"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">干湿分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下水除臭"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">下水除臭</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下水管隔音"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">下水管隔音</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插座"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">插座</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#墙壁"><span class="nav-number">1.3.0.5.</span> <span class="nav-text">墙壁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主卧"><span class="nav-number">1.4.</span> <span class="nav-text">主卧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#地面"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">地面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#次卧"><span class="nav-number">1.5.</span> <span class="nav-text">次卧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#地面-1"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">地面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#厨房"><span class="nav-number">1.6.</span> <span class="nav-text">厨房</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#墙"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">墙</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.7.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#新风成本？"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">新风成本？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空调？"><span class="nav-number">1.7.0.2.</span> <span class="nav-text">空调？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阳台的小九九能不能打掉？"><span class="nav-number">1.7.0.3.</span> <span class="nav-text">阳台的小九九能不能打掉？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阳台能否放洗衣机？（下水）"><span class="nav-number">1.7.0.4.</span> <span class="nav-text">阳台能否放洗衣机？（下水）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#洗手间的小九九能否放下洗衣机？"><span class="nav-number">1.7.0.5.</span> <span class="nav-text">洗手间的小九九能否放下洗衣机？</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
