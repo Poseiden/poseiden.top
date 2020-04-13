@@ -20,30 +20,32 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="静若处子，动则猛虎">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Poseiden - 三叉戟">
-<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+  <meta name="description" content="年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。 开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）开发环境：struts2（其他的和本文无关，故不介绍）（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关">
+<meta property="og:url" content="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Poseiden - 三叉戟">
-<meta property="og:description" content="静若处子，动则猛虎">
+<meta property="og:description" content="年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。 开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）开发环境：struts2（其他的和本文无关，故不介绍）（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-08T02:40:44.000Z">
+<meta property="article:modified_time" content="2015-12-08T02:40:44.000Z">
 <meta property="article:author" content="Poseiden">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/page/2/">
+<link rel="canonical" href="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Poseiden - 三叉戟</title>
+  <title>浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关 | Poseiden - 三叉戟</title>
   
 
 
@@ -150,15 +152,15 @@
         <div class="content-wrap">
           
 
-          <div class="content index">
+          <div class="content post">
             
 
   <div class="posts-expand">
-        
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/11/20/%E6%8A%98%E8%85%BEOctopress%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/08/%E6%B5%85%E8%B0%88MyEclipse%E5%92%8CIdea%E4%B8%ADTomcat%E7%9A%84%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://poseiden-blog.oss-cn-beijing.aliyuncs.com/avatar.JPG">
@@ -170,10 +172,9 @@
       <meta itemprop="name" content="Poseiden - 三叉戟">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/11/20/%E6%8A%98%E8%85%BEOctopress%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97/" class="post-title-link" itemprop="url">折腾Octopress的一点心得</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -182,7 +183,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2015-11-20 08:51:05" itemprop="dateCreated datePublished" datetime="2015-11-20T08:51:05+08:00">2015-11-20</time>
+              <time title="创建时间：2015-12-08 10:40:44" itemprop="dateCreated datePublished" datetime="2015-12-08T10:40:44+08:00">2015-12-08</time>
             </span>
 
           
@@ -196,37 +197,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>折腾这款博客框架已经来来回回有一个多月了，网上的“教程”鱼龙混杂，以至于其中走了不少弯路（其实也让我对Ruby和Git的一些机制产生更加深刻的理解）。趁着这次出差事情不多，粗略的记录一下安装过程以及详细的爬坑过程吧。</p>
-<h5 id="环境：Ubuntu14-04-LTS"><a href="#环境：Ubuntu14-04-LTS" class="headerlink" title="环境：Ubuntu14.04 LTS"></a>环境：Ubuntu14.04 LTS</h5><h5 id="Ruby版本：1-9-3（官方推荐的是1-9-2，但是小版本的变动应该无伤大雅，至少在这个项目上暂时没发现什么坑）"><a href="#Ruby版本：1-9-3（官方推荐的是1-9-2，但是小版本的变动应该无伤大雅，至少在这个项目上暂时没发现什么坑）" class="headerlink" title="Ruby版本：1.9.3（官方推荐的是1.9.2，但是小版本的变动应该无伤大雅，至少在这个项目上暂时没发现什么坑）"></a>Ruby版本：1.9.3（官方推荐的是1.9.2，但是小版本的变动应该无伤大雅，至少在这个项目上暂时没发现什么坑）</h5><h5 id="Gem版本：2-4-8"><a href="#Gem版本：2-4-8" class="headerlink" title="Gem版本：2.4.8"></a>Gem版本：2.4.8</h5><h5 id="Git版本：1-9-1"><a href="#Git版本：1-9-1" class="headerlink" title="Git版本：1.9.1"></a>Git版本：1.9.1</h5>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2015/11/20/%E6%8A%98%E8%85%BEOctopress%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。</p>
+<h5 id="开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）"><a href="#开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）" class="headerlink" title="开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）"></a>开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）</h5><h5 id="开发环境：struts2（其他的和本文无关，故不介绍）"><a href="#开发环境：struts2（其他的和本文无关，故不介绍）" class="headerlink" title="开发环境：struts2（其他的和本文无关，故不介绍）"></a>开发环境：struts2（其他的和本文无关，故不介绍）</h5><p>（看本文前如果有不知道Tomcat几种部署方式的请自行谷歌。）</p>
+<a id="more"></a>
+
+<p>Tomcat部署项目有三种方式，这种讲解说明的教程在网上一抓一大把。而MyEclipse和Idea分别采用了不同的部署项目方式。</p>
+<h3 id="MyEclipse部署项目。"><a href="#MyEclipse部署项目。" class="headerlink" title="MyEclipse部署项目。"></a>MyEclipse部署项目。</h3><ul>
+<li>从目录结构上看，MyEclipse部署项目就是用了最简单粗暴的一种。如果用MyEclipse关联了本地的Tomcat，那么部署就是直接将解压后的war包目录扔到了webapps里，然后启动。这种方式最简单直接，对于一开始使用的初学者来说也比较容易懂。</li>
+</ul>
+<h3 id="Idea部署项目"><a href="#Idea部署项目" class="headerlink" title="Idea部署项目"></a>Idea部署项目</h3><p>大家已经都清楚，Tomcat有一种部署方式是在服务器目录下的<code>conf/Catalina/localhost</code>(如果你使用了这个地址访问你的项目)下生成一个xml文件，文件的名称可以随意指定，但是里面的内容决定了你访问项目的上下文名称以及项目的物理地址。<br>而Idea正是用了这种方式，当你在ide中给服务器指定了项目的物理地址以及访问上下文并启动服务器之后，在你的idea安装目录下（一般是主目录下的隐藏文件夹IntelliJIdea14）的<code>system/tomcat/xxx(你的项目或者模块名称)/conf/Catalina/localhost</code>下也生成一个xml文件。（如果你没有设置上下文，那么这个xml就叫<code>ROOT.xml</code>，否则，就叫你设置的那个名字。）里面通过节点记录了你刚才设置的相关值。这种方式会比较绕，但是在后期便于管理，尤其是像idea这种模块概念分明的ide。</p>
+<h3 id="Web项目目录结构"><a href="#Web项目目录结构" class="headerlink" title="Web项目目录结构"></a>Web项目目录结构</h3><p>在标准的MVC模型的建议中，把页面文件（jsp或者freemarker或者其他）放在web-inf下是安全的行为。但是这只是规范，或者一种标准，要是不遵守也没有逻辑上的问题。下面就来说说放在web-inf中的情况下，实际访问的目录结构是什么样的。</p>
+<p>如果你放到webinf中，是通过struts2等方式请求的。那在访问项目后服务器端的结构就变成了<code>/project/namespace/xxxxx.do</code>。（读者要是不明白可以自行打开浏览器的debugger看）。project是我设置的上下文根，你要不设置就没有这一层，<code>namespace/xxxxx.do</code>是你通过struts2访问页面的请求路径。也就是说，目录结构并不像你在开发环境看到的，其实已经没有了web-inf这一层，（这也是一直我在页面引用js引用不到的原因）。所以你当你在页面使用相对路径引用css文件时，就用<code>../</code>跳出上一级目录就能引用到。（前提是你把css或者js文件别放在webinf中）。<br>如果你使用的是以<code>/</code>开头的绝对路径，那么在你设置了上下根之后，引用时需要加上你的上下文名称，因为jsp等页面在写<code>/</code>时实际上引用到了服务器根路径下，所以你的写法应该是<code>/project/xxx.js</code>。如果你没有设置上下根，那么直接就写<code>/xxx.js</code>就好。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实在这次问题中主要绊倒我的就是在页面放到webinf之后，不知道怎么写外部js的引用路径问题。最后通过浏览器的调试得知项目的目录，问题才得以解决。</p>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/11/20/%E6%8A%98%E8%85%BEOctopress%E7%9A%84%E4%B8%80%E7%82%B9%E5%BF%83%E5%BE%97/" rel="prev" title="折腾Octopress的一点心得">
+      <i class="fa fa-chevron-left"></i> 折腾Octopress的一点心得
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/03/22/%E5%AF%B9python%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3/" rel="next" title="对Python高阶函数的一些理解">
+      对Python高阶函数的一些理解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
 
   </div>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
 
 
           </div>
@@ -277,6 +290,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发工具：IDEA14-Tomcat7（其他的和本文无太大关系，故不介绍…-）"><span class="nav-number">1.</span> <span class="nav-text">开发工具：IDEA14 +Tomcat7（其他的和本文无太大关系，故不介绍….）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开发环境：struts2（其他的和本文无关，故不介绍）"><span class="nav-number">2.</span> <span class="nav-text">开发环境：struts2（其他的和本文无关，故不介绍）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyEclipse部署项目。"><span class="nav-number"></span> <span class="nav-text">MyEclipse部署项目。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Idea部署项目"><span class="nav-number"></span> <span class="nav-text">Idea部署项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web项目目录结构"><span class="nav-number"></span> <span class="nav-text">Web项目目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
       </div>
       <!--/noindex-->
 
