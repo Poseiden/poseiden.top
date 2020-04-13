@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "折腾Octopress的一点心得"
-date: 2015-11-20 16:51:05 +0800
+title: 折腾Octopress的一点心得
+date: '2015-11-20 16:51:05 +0800'
 comments: true
-categories: 
+abbrlink: 49040
+categories:
 ---
 折腾这款博客框架已经来来回回有一个多月了，网上的“教程”鱼龙混杂，以至于其中走了不少弯路（其实也让我对Ruby和Git的一些机制产生更加深刻的理解）。趁着这次出差事情不多，粗略的记录一下安装过程以及详细的爬坑过程吧。
 

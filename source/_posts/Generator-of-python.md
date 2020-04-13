@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "Generator of Python"
-date: 2016-04-19 21:42:39 +0800
+title: Generator of Python
+date: '2016-04-19 21:42:39 +0800'
 comments: true
-categories: 
+abbrlink: 16887
+categories:
 ---
 近日，趁着找工作的间隙，了解了一下Python中一直让我不解的generator。现在特此写一篇博客记录下来自己的理解，也好让自己理解的透彻一点吧。
 

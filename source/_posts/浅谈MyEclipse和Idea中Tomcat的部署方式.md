@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关"
-date: 2015-12-08 18:40:44 +0800
+title: 浅谈MyEclipse和Idea中Tomcat的部署方式以及在项目中设置上下文的相关
+date: '2015-12-08 18:40:44 +0800'
 comments: true
-categories: 
+abbrlink: 1633
+categories:
 ---
 年底终于可以在繁重的开发任务上喘一口气，决定用一些新东西来重构老项目。有些平时没有追究的细节问题在一个人开发时，由于没有了别人的参考，被坑的还是很惨的，现在特此记录下来，希望给同样有疑惑的人一个参考吧。
 

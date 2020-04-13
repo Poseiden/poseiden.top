@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "对Python高阶函数的一些理解"
-date: 2016-03-23 08:59:16 +0800
+title: 对Python高阶函数的一些理解
+date: '2016-03-23 08:59:16 +0800'
 comments: true
-categories: 
+abbrlink: 14442
+categories:
 ---
 本人是一名Java程序员，在最近学习python的过程中，因为思维惯性和没有认真理解python的概念，导致很多例子混淆。现在写下这篇笔记，让自己以后在回头看看的时候也有个参考。LoL。。。。。
 
